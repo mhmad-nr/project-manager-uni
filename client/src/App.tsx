@@ -3,11 +3,7 @@ import AppRoute from './Route'
 import { StoreProvider } from './context'
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
-declare global {
-  interface Window {
-    ethereum: any
-  }
-}
+
 function App() {
 
   return (
