@@ -11,7 +11,7 @@ async function bootstrap() {
     forbidUnknownValues: false
   }))
   // app.useGlobalInterceptors(new TransformInterceptor())
-
+  app.enableCors()
 
   const config = new DocumentBuilder()
     .setTitle('Project Management')

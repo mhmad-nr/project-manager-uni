@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm"
-import { InternalServerErrorException, NotFoundException, HttpException, HttpStatus, ConflictException } from "@nestjs/common"
+import { InternalServerErrorException, NotFoundException, ConflictException, BadRequestException } from "@nestjs/common"
 import { Project } from "./project.entity";
 import { CreateProjectDto, IdSCredentialsDto, UpdateProjectDto } from "./dto";
 import { GetProjectFilterDto } from "./dto";
@@ -60,13 +60,8 @@ export class ProjectRepository extends Repository<Project> {
             await this.query(sqlQuery)
         } catch (error) {
             if (error.code == "22P02") {
-                throw new HttpException({
-                    status: HttpStatus.NOT_ACCEPTABLE,
-                    error: 'the projectId is not valid',
-                }, HttpStatus.NOT_ACCEPTABLE, {
-                    cause: error
-                });
 
+                throw new BadRequestException("the projectId is not valid")
             }
             throw new InternalServerErrorException()
         }
@@ -83,13 +78,7 @@ export class ProjectRepository extends Repository<Project> {
         } catch (error) {
 
             if (error.code == "22P02") {
-                throw new HttpException({
-                    status: HttpStatus.NOT_ACCEPTABLE,
-                    error: 'the projectId is not valid',
-                }, HttpStatus.NOT_ACCEPTABLE, {
-                    cause: error
-                });
-
+                throw new BadRequestException('the projectId is not valid')
             }
             throw new InternalServerErrorException()
         }
@@ -104,12 +93,8 @@ export class ProjectRepository extends Repository<Project> {
         } catch (error) {
 
             if (error.code == "22P02") {
-                throw new HttpException({
-                    status: HttpStatus.NOT_ACCEPTABLE,
-                    error: 'the projectId is not valid',
-                }, HttpStatus.NOT_ACCEPTABLE, {
-                    cause: error
-                });
+                throw new BadRequestException('the projectId is not valid')
+
 
             } else if (error.code == '23505') {
                 throw new ConflictException("This user has already joined to the project")
@@ -131,12 +116,8 @@ export class ProjectRepository extends Repository<Project> {
         } catch (error) {
 
             if (error.code == "22P02") {
-                throw new HttpException({
-                    status: HttpStatus.NOT_ACCEPTABLE,
-                    error: 'the projectId is not valid',
-                }, HttpStatus.NOT_ACCEPTABLE, {
-                    cause: error
-                });
+                throw new BadRequestException('the projectId is not valid')
+
 
             } else if (error.code == '23505') {
                 throw new ConflictException("This user has already joined to the project")
@@ -175,12 +156,8 @@ export class ProjectRepository extends Repository<Project> {
 
         } catch (error) {
             if (error.code == "22P02") {
-                throw new HttpException({
-                    status: HttpStatus.NOT_ACCEPTABLE,
-                    error: 'the projectId is not valid',
-                }, HttpStatus.NOT_ACCEPTABLE, {
-                    cause: error
-                });
+                throw new BadRequestException('the projectId is not valid')
+
 
             }
             throw new InternalServerErrorException()
@@ -201,25 +178,17 @@ export class ProjectRepository extends Repository<Project> {
             const [res] = (await this.query(sqlQuery)) as existType
 
             if (!res.exists) {
-                throw new NotFoundException()
+                throw new NotFoundException(`the project with id = ${projectId} does not exist`)
             }
 
         } catch (error) {
 
             if (error.code == "22P02") {
-                throw new HttpException({
-                    status: HttpStatus.NOT_ACCEPTABLE,
-                    error: 'the projectId is not valid',
-                }, HttpStatus.NOT_ACCEPTABLE, {
-                    cause: error
-                });
+                throw new BadRequestException('the projectId is not valid')
+
             } else if (error.status == "404") {
-                throw new HttpException({
-                    status: HttpStatus.NOT_FOUND,
-                    error: `the project with id = ${projectId} does not exist`,
-                }, HttpStatus.NOT_FOUND, {
-                    cause: error
-                });
+
+                throw new NotFoundException(`the project with id = ${projectId} does not exist`)
             }
             throw new InternalServerErrorException()
 

@@ -44,6 +44,8 @@ export class ProjectsController {
     @Post("create")
     @UseGuards(OnlyManagerGuard)
     async createProject(@Body() createProjectDto: CreateProjectDto, @GetUser() manager: User): Promise<void> {
+        console.log(manager);
+
         await this.projectsService.createProject(createProjectDto, manager);
     }
     @Patch("update/:id")

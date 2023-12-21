@@ -14,6 +14,6 @@ export class UserDto {
     
     @ApiProperty()
     @Expose()
-    is_manager: string;
+    isManager: string;
 
 }

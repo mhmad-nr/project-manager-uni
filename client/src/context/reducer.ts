@@ -1,16 +1,16 @@
-import { ActionKind, storeType } from "../types";
+import { contextActionsEnum } from "../types";
 
-export function reducer(store: storeType, action: any): storeType {
+export function reducer(store: any, action: any): any {
     const { type, payload } = action;
     switch (type) {
 
-        case ActionKind.INIT_ACCOUNTS:
+        case contextActionsEnum.SIGN_IN:
             return {
                 ...store,
                 activeAccount: payload.activeAccount,
                 accounts: payload.accounts
             };
-        case ActionKind.CHANGE_ACCOUNT:
+        case contextActionsEnum.LOG_OUT:
             return {
                 ...store,
                 activeAccount: payload.activeAccount,

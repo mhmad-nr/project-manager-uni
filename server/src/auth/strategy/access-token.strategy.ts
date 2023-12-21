@@ -18,7 +18,7 @@ export class JWTStrategy extends PassportStrategy(Strategy, 'access-token') {
   ) {
 
     super({
-      jwtFromRequest: ExtractJwt.fromBodyField('accessToken'),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: 'access-token'
     })
   }

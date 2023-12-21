@@ -16,9 +16,9 @@ export class SignInCredentialsDto {
     @IsString()
     @MinLength(8)
     @MaxLength(20)
-    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-        message: "This password is too weak"
-    })
+    // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    //     message: "This password is too weak"
+    // })
     password: string;
 
 

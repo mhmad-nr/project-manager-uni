@@ -7,7 +7,7 @@ import { User } from 'src/auth/entity';
 import { AccessTokenGuard, OnlyManagerGuard } from 'src/auth/guard';
 import { TaskDto } from './dto/task-credentials.dto';
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
-import { StatusEnum } from 'src/common';
+import { UpdateStatusTaskDto } from './dto';
 
 
 @ApiTags("Task")
@@ -39,11 +39,11 @@ export class TasksController {
     }
 
     @Patch("update/:id")
-    async updateStatusTask(@Param("id") id: string, @Body("status") status: StatusEnum, @GetUser() user: User): Promise<void> {
-        return await this.tasksService.updateTaskStatus(id, status, user);
+    async updateStatusTask(@Param("id") id: string, @Body() status: UpdateStatusTaskDto, @GetUser() user: User): Promise<void> {
+        return await this.tasksService.updateTaskStatus(id, status.status, user);
     }
 
-    @Delete("delete/:id")
+    @Delete("/:id")
     @UseGuards(OnlyManagerGuard)
     async deleteTask(@Param("id") id: string, @GetUser() manager: User): Promise<void> {
         return await this.tasksService.deleteTask(id, manager);

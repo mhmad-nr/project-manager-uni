@@ -18,7 +18,7 @@ export class User {
     @Column()
     password: string
     
-    @Column({ name: "is_manager" })
+    @Column({ name: "isManager" })
     isManager: boolean
     
     @Exclude()

@@ -1,14 +1,17 @@
 import { Suspense } from 'react';
-import AppRoute from './Route'
-import { StoreProvider } from './context'
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import AppRoute from './route';
+import { ReduxProvider } from './redux/store';
+
+
 
 function App() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <StoreProvider>
+      <ReduxProvider>
+
         <AppRoute />
         <ToastContainer
           position="top-right"
@@ -22,7 +25,7 @@ function App() {
           pauseOnHover
           theme="light"
         />
-      </StoreProvider>
+      </ReduxProvider>
     </Suspense>
 
   )

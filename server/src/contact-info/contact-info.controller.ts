@@ -5,6 +5,7 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from 'src/auth/entity';
 import { AccessTokenGuard } from 'src/auth/guard';
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
+import { UserInfoCredentials } from './dto/user-info-credentials.dto';
 
 
 @ApiTags("Contact Info")
@@ -13,11 +14,11 @@ import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 export class ContactInfoController {
     constructor(private contactInfoService: ContactInfoService) { }
 
-    @Get("get-info")
+    @Get("")
     @ApiOkResponse({
-        type: ContactInfoCredentialsDto
+        type: UserInfoCredentials
     })
-    async getInfo(@GetUser() user: User): Promise<ContactInfoCredentialsDto> {
+    async getInfo(@GetUser() user: User): Promise<UserInfoCredentials> {
         return await this.contactInfoService.getInfo(user)
     }
     @Post("add")
@@ -25,7 +26,7 @@ export class ContactInfoController {
         return this.contactInfoService.addContactInfo(contactInfoCredentialsDto, user)
     }
 
-    @Post("edite-address")
+    @Post("edite")
     async editeAddress(@Body() editeAddressCredentialsDto: EditeAddressCredentialsDto, @GetUser() user: User): Promise<any> {
         return this.contactInfoService.editeAddress(editeAddressCredentialsDto, user)
     }

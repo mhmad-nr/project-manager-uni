@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestMiddleware, NestModule } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserRepository } from './repository';
@@ -23,6 +23,6 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || ""
   ],
   controllers: [AuthController],
   providers: [AuthService, JWTStrategy,/*RefreshTokenStrategy*/],
-  exports: [JWTStrategy, PassportModule, AuthService]
+  exports: [ JWTStrategy, PassportModule, AuthService]
 })
-export class AuthModule { }
+export class AuthModule {}

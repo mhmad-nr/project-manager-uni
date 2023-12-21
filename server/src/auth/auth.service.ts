@@ -5,6 +5,7 @@ import { SignUpCredentialsDto, SignInCredentialsDto } from './dto';
 import * as bcrypt from "bcrypt"
 import { JwtService } from "@nestjs/jwt"
 import { User } from './entity';
+import { JwtResponesDto } from './dto/jwt-respones-dto';
 
 @Injectable()
 export class AuthService {
@@ -16,13 +17,13 @@ export class AuthService {
         return this.userRepository.createUser(authCredentials)
     }
 
-    async signin(authCredentials: SignInCredentialsDto): Promise<{ accessToken: string }> {
+    async signin(authCredentials: SignInCredentialsDto): Promise<JwtResponesDto> {
         const { email, password } = authCredentials
-        const user = await this.findUserByEmail(email )
+        const user = await this.findUserByEmail(email)
         const isPasswordCorrect = await bcrypt.compare(password, user.password)
         if (user && isPasswordCorrect) {
             const accessToken = this.jwtService.sign({ email })
-            return { accessToken }
+            return { accessToken, isManager: user.isManager }
         } else {
             throw new UnauthorizedException("please check your login credentials")
         }

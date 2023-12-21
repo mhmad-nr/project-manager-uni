@@ -2,10 +2,6 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as  dotenv from "dotenv"
-// import { Engineer, Manager } from './auth/user.entity';
-import { ContactInfo } from './contact-info/contactInfo.entity';
-import { Project } from './projects/project.entity';
-import { Task } from './tasks/task.entity';
 import { ProjectsModule } from './projects/projects.module';
 import { TasksModule } from './tasks/tasks.module';
 import { ContactInfoModule } from './contact-info/contact-info.module';
