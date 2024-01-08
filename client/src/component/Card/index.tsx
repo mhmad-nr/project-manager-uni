@@ -1,8 +1,8 @@
-import { Item } from "./Item"
-import { User } from "./User"
+import { Task } from "./Task"
+import { Project } from "./Project"
 
 const Card = {
-    Item,
-    User
+    Task,
+    Project
 }
 export { Card }

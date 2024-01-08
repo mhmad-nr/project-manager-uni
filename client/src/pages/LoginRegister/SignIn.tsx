@@ -30,6 +30,8 @@ const SignIn = () => {
             console.log(data);
 
             const { accessToken, isManager } = data
+            console.log(isManager);
+
             dispatch(loginAction(accessToken, isManager))
             toastFun("you have signed in successfully")
             navigate('/project')

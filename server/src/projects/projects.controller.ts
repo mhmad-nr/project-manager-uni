@@ -48,6 +48,11 @@ export class ProjectsController {
 
         await this.projectsService.createProject(createProjectDto, manager);
     }
+    @Post("delete-user/:id")
+    @UseGuards(OnlyManagerGuard)
+    async deleteUserToProject(@Param("id") projectId: string, @GetUser() manager: User, @Body() user: UserProjectDto): Promise<void> {
+        await this.projectsService.deleteUser({ projectId, userId: manager.id }, user.email);
+    }
     @Patch("update/:id")
     @UseGuards(OnlyManagerGuard)
     async updateProject(@Param("id") projectId: string, @GetUser() manager: User, @Body() updateProjectDto: UpdateProjectDto): Promise<void> {
@@ -63,12 +68,7 @@ export class ProjectsController {
     async deleteProject(@Param("id") projectId: string, @GetUser() manager: User): Promise<void> {
         await this.projectsService.deleteProject({ projectId, userId: manager.id });
     }
-    @Delete("delete-user/:id")
-    @UseGuards(OnlyManagerGuard)
-    async deleteUserToProject(@Param("id") projectId: string, @GetUser() manager: User, @Body() user: UserProjectDto): Promise<void> {
 
-        await this.projectsService.deleteUser({ projectId, userId: manager.id }, user.email);
-    }
 
     // @Delete("leave/:id")
     // async leaveProject(@Param("id") projectId: string, @GetUser() user: User): Promise<void> {

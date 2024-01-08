@@ -16,7 +16,23 @@ export class TaskRepository extends Repository<Task> {
         const { search, status, projectId } = queryDto
 
         const sqlQuery = `SELECT * FROM task WHERE task."userId" = '${user.id}' 
-        ${projectId ? `AND task.projectId = '${projectId}'` : ""}
+        ${projectId ? `AND task."projectId" = '${projectId}'` : ""}
+        ${(status || search) ? "AND" : ""}
+        ${status ? `status = '${status}'` : ""} ${(status && search) ? "AND" : ""}
+        ${search ? `(title LIKE '%${search}%' OR description LIKE '%${search}%')` : ""}; `
+
+        const tasks = (await this.query(sqlQuery)) as Task[]
+        const newTasks = tasks.map((task) => serializeDto<TaskDto, Task>(TaskDto, task))
+
+        return newTasks
+
+    }
+    async getUserTasks(queryDto: GetTasksFilterDto, userId: string): Promise<TaskDto[]> {
+
+        const { search, status, projectId } = queryDto
+
+        const sqlQuery = `SELECT * FROM task WHERE task."userId" = '${userId}' 
+        ${projectId ? `AND task."projectId" = '${projectId}'` : ""}
         ${(status || search) ? "AND" : ""}
         ${status ? `status = '${status}'` : ""} ${(status && search) ? "AND" : ""}
         ${search ? `(title LIKE '%${search}%' OR description LIKE '%${search}%')` : ""}; `
@@ -31,9 +47,9 @@ export class TaskRepository extends Repository<Task> {
 
         const sqlQuery = `SELECT * FROM task WHERE task."userId" = '${user.id}' AND task.id = '${id}'`
 
-        const task = (await this.query(sqlQuery)) as Task
+        const task = (await this.query(sqlQuery))
 
-        return serializeDto<TaskDto, Task>(TaskDto, task)
+        return serializeDto<TaskDto, Task>(TaskDto, task[0])
 
     }
     async deleteTask(id: string, user: User): Promise<Task> {
@@ -72,11 +88,9 @@ export class TaskRepository extends Repository<Task> {
 
         try {
 
-            const res = await this.query(sqlQuery)
-            console.log(res);
+            await this.query(sqlQuery)
 
         } catch (error) {
-            console.log(error);
 
         }
 

@@ -1,6 +1,5 @@
 import { Expose } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger"
-import { StatusEnum } from "src/common";
 
 export class ProjectDto {
 
@@ -15,9 +14,5 @@ export class ProjectDto {
     @ApiProperty()
     @Expose()
     description: string;
-
-    @ApiProperty()
-    @Expose()
-    status: StatusEnum;
 
 }

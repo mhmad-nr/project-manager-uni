@@ -29,7 +29,9 @@ const Button: React.FC<buttonType> = ({ text, color, size, isLoading, isOutlined
         wide: 'btn-wide',
     }
     return (
-        <button onClick={onClick}
+        <button
+            type="button"
+            onClick={onClick}
             className={`btn 
             capitalize
             ${colorVariants[color]}

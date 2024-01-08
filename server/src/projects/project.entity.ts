@@ -17,9 +17,6 @@ export class Project {
     @Column()
     description: string
 
-    @Column()
-    status: StatusEnum
-
     @Exclude({ toPlainOnly: true })
     @ManyToMany((_type) => User)
     @JoinTable({

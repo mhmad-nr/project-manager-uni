@@ -30,7 +30,7 @@ const schema = Yup.object().shape({
         .required("Passwords must match")
         .oneOf([Yup.ref('password')], 'Passwords must match'),
     is_manager: Yup.bool() // use bool instead of boolean
-        .oneOf([true]),
+
 })
 
 const SignUp = ({ doSignIn }: { doSignIn: () => void }) => {

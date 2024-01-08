@@ -30,8 +30,10 @@ interface IActionLogOut {
 
 type IAction = IActionSignIn | IActionLogOut
 
-const reducer = (state = initState, action): storeType => {
+const reducer = (state = initState, action: any): storeType => {
     const { type } = action;
+    console.log(action);
+
     switch (type) {
         case ActionsEnum.SIGN_IN:
             return { ...state, token: action.token, isManager: action.isManager }

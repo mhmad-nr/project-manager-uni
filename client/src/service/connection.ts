@@ -34,7 +34,7 @@ const onResponseError = (error: AxiosError<errorAxiosType>): Promise<AxiosError>
         }
     }
 
-    if (error.response?.data.statusCode) {
+    if (error.response?.data.statusCode == 418) {
         window.location.replace('/add-contact-info')
     }
 
@@ -74,6 +74,8 @@ function post<T, P>(url: string, data: T, config?: AxiosRequestConfig<any> | und
 };
 
 function patch<T, P>(url: string, data: T, config?: AxiosRequestConfig<any> | undefined): Promise<AxiosResponse<P>> {
+    console.log(data);
+
     return new Promise((success, fail) => {
         axios.patch(url, data, config)
             .then(result => {

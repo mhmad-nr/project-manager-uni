@@ -14,13 +14,13 @@ export class ProjectRepository extends Repository<Project> {
 
     async getProjects(queryDto: GetProjectFilterDto, user: User): Promise<ProjectDto[]> {
         const { id: userId } = user
-        const { status, search } = queryDto
+        const { search } = queryDto
 
         const sqlQuery = `SELECT * FROM project
         INNER JOIN project_user ON project.id = project_user.project_id
         WHERE project_user.user_id = '${userId}'
         ${(status || search) ? "AND" : ""}
-        ${status ? `status = '${status}'` : ""} ${(status && search) ? "AND" : ""}
+        ${(status && search) ? "AND" : ""}
         ${search ? `(title LIKE '%${search}%' OR description LIKE '%${search}%')` : ""} ;`
 
         const projects = await this.query(sqlQuery)
@@ -67,10 +67,10 @@ export class ProjectRepository extends Repository<Project> {
         }
     }
     async updateProject(idSCredentialsDto: IdSCredentialsDto, updateProjectDto: UpdateProjectDto): Promise<void> {
-        const { title, status, description } = updateProjectDto
+        const { title, description } = updateProjectDto
         const { projectId } = idSCredentialsDto
 
-        const sqlQuery = `UPDATE project SET ${title ? `title = '${title}',` : ""}${description ? `description = '${description}',` : ""}${status ? `status = '${status}',` : ""}WHERE id = '${projectId}';`
+        const sqlQuery = `UPDATE project SET ${title ? `title = '${title}',` : ""}${description ? `description = '${description}',` : ""}WHERE id = '${projectId}';`
         const newSqlQuery = sqlQuery.replace(",WHERE", " WHERE")
 
         try {

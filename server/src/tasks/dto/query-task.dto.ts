@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from "@nestjs/swagger"
 import { StatusEnum } from 'src/common';
 
@@ -18,4 +18,10 @@ export class GetTasksFilterDto {
   @IsOptional()
   @IsUUID()
   projectId?: string;
+
+  @ApiProperty({ nullable: true })
+  @IsOptional()
+  @IsEmail()
+  userEmail?: string;
+
 }

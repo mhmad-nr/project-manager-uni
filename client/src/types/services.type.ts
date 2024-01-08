@@ -27,6 +27,7 @@ export interface UserType {
     id: string
     email: string
     isManager: boolean
+    joinedAt: Date
 }
 
 
@@ -61,8 +62,11 @@ export interface CreateProjectType {
 
 export type ProjectType = {
     id: string,
-    status: StatusEnum
 } & CreateProjectType
+
+export type ProjectDataType = {
+    tasks?: TaskType[]
+} & ProjectType
 // function name(params: CreateProjectType & ProjectType) {
 
 // }
@@ -70,25 +74,29 @@ export type ProjectType = {
 export interface searchTaskType {
     status?: string,
     search?: string,
+    projectId?: string
+    userEmail?: string
 }
 export interface CreateTaskType {
     projectId: string,
     title: string,
     description: string,
     userEmail: string,
-    endedAt: string
+    endedAt: Date
 }
 
 export interface TaskType {
-    id?: string,
+    id: string,
     title: string,
     description: string,
     status: StatusEnum,
     project_id?: string,
-    createdAt?: string,
+    createdAt: string,
     endDate?: string
 }
-
+export interface TaskUpdateType {
+    status: StatusEnum;
+}
 export class TaskFilterType {
     status?: StatusEnum;
     search?: string;

@@ -12,7 +12,7 @@ export const Sidebar = () => {
                 <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">Open drawer</label>
 
             </div>
-            <div className="drawer-side h-full">
+            <div className="drawer-side z-50 h-full">
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                 <ul className="menu p-4 w-56 h-full bg-base-200 text-base-content">
                     <li>

@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux'
 
 type stateType = {
   projects: ProjectType[],
-  sides: TaskType[] | any[],
+  tasks: TaskType[],
 
 }
 const intialValuesLogin = {
@@ -29,7 +29,7 @@ const schemaLogin = Yup.object().shape({
 const Projects = () => {
 
   const [state, setState] = useState<stateType>({
-    sides: [],
+    tasks: [],
     projects: []
   })
 
@@ -45,14 +45,15 @@ const Projects = () => {
 
   useEffect(() => {
 
-    getProjects()
-    getTasks()
+    getData()
+
   }, [])
 
-  const getProjects = async () => {
+  const getData = async () => {
     try {
-      const { data } = await Project().getAll("")
-      setState({ ...state, projects: data })
+      const { data: projects } = await Project().getAll("")
+      const { data: tasks } = await Task().get({})
+      setState({ ...state, tasks, projects })
 
     } catch (error) {
       const { statusCode } = error as errorAxiosType
@@ -62,23 +63,10 @@ const Projects = () => {
     }
   }
 
-  const getTasks = async () => {
-    try {
-      const { data } = await Task().get({})
-      setState({ ...state, sides: data })
-
-    } catch (error) {
-      const { statusCode } = error as errorAxiosType
-      if (statusCode) {
-        navigate("/profile")
-      }
-    }
-
-  }
   const createProject = async (value: CreateProjectType) => {
     try {
-      const res = await Project().create(value)
-
+      await Project().create(value)
+      ref.current?.close()
       toastFun("Project has been created")
     } catch (error) {
       const { statusCode } = error as errorAxiosType
@@ -89,7 +77,7 @@ const Projects = () => {
 
   return (
     <div className="flex w-full h-full">
-      {!isManager ?
+      {isManager ?
         <Modal ref={ref} >
           <h2 className='text-center font-bold'>Create New Project</h2>
           <Formik
@@ -139,56 +127,32 @@ const Projects = () => {
           </Formik>
         </Modal>
         : <></>}
-      <div className="flex-1 h-full overflow-y-auto px-4">
+      <div className="flex-1  h-full overflow-y-auto px-4">
         <div className='mt-3 mb-6'>
           <h1 className='text-xl font-semibold'>Projects</h1>
         </div>
-        {!isManager ?
+        {isManager ?
           <div className='flex w-full justify-end mb-4'>
             <Button icon={<NewSvg />} text='Project' color='default' size='sm' onClick={() => ref.current?.showModal()} />
           </div> : <></>
         }
-
-        {isLoading.project && <Skeleton count={3} spacing={"grid gap-y-4"} height='h-[160px]' />}
-
-        {state.projects.length == 0 ? <>
+        {state.projects.length == 0 && <>
           <div className='w-full h-44'>
             <div className='w-full h-full rounded-3xl border border-dashed flex justify-center items-center'>
               <h2>Empty</h2>
-
             </div>
           </div>
-        </> : state.projects.map(({ title, description, id }) => <>
-          <div className='mb-3 flex-1'>
-            <Card.Item type='project' id={id} status={StatusEnum.DONE} title={title} />
-          </div>
-        </>)}
-      </div>
-      <div className="divider divider-horizontal m-0"></div>
-      <div className="px-4 h-full overflow-y-auto">
-        <div className='mt-3 mb-6'>
-          <h1 className='text-xl font-semibold'>Your {isManager ? "Colleagues" : "Tasks"}</h1>
-        </div>
-
-        {isLoading.card ? <Skeleton count={3} width='w-96' spacing={"grid gap-y-4"} height='h-[160px]' /> : <>
-          {state.sides.length == 0 && <div className='w-96 h-44'>
-            <div className='w-full h-full rounded-3xl border border-dashed flex justify-center items-center'>
-              <h2>Empty</h2>
-            </div>
-          </div>}
-          {state.sides.length > 0 && isManager ? state.sides.map(({ email }) => <>
-            <div className='mb-3 w-96'>
-              <Card.User id='id' email='mohammad@gmai.com' />
-              {/* <Card id='title' type='user' email={email} /> */}
-            </div>
-          </>) : state.sides.map(({ }) => <>
-            <div className='mb-3 w-96'>
-              <Card.Item type='task' id='id' project_id='project_id' createdAt='sdasd' status={StatusEnum.DONE} title={"title"} description={"description"} />
-              {/* <Card id='title' type='task' status={StatusEnum.DONE} title={title} description={description} /> */}
-            </div>
-          </>)}
         </>}
+
+        <div className='w-full grid grid-cols-3 gap-x-4 gap-y-6'>
+
+          {state.projects.length != 0 && state.projects.map(({ title, id }) => <div key={id} className='mb-3 flex-1'>
+            <Card.Project id={id} status={StatusEnum.DONE} title={title} onClick={() => navigate("/project/" + id)} />
+          </div>)}
+        </div>
       </div>
+
+
     </div>
   )
 }

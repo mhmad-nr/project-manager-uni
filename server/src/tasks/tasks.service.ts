@@ -19,7 +19,14 @@ export class TasksService {
     ) { }
 
     async getTasks(getTasksFilterDto: GetTasksFilterDto, user: User): Promise<TaskDto[]> {
+
+        if (user.isManager && getTasksFilterDto.userEmail) {
+            const { id } = await this.authService.findUserByEmail(getTasksFilterDto.userEmail)
+
+            return this.taskRepository.getUserTasks(getTasksFilterDto, id)
+        }
         return this.taskRepository.getTasks(getTasksFilterDto, user)
+
     }
 
 
